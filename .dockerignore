@@ -1,0 +1,50 @@
+# Git
+.git/
+.gitignore
+
+# Virtual environment
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Tests
+tests/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment files
+.env
+.env.*
+*.env
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Alembic versions (not needed for runtime)
+alembic/versions/*.pyc
+
+# Database dumps
+*.sql
+*.dump
+
+# Docker files
+Dockerfile
+.dockerignore
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+
+# Misc
+README.md
+.gitattributes
