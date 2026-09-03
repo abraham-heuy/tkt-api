@@ -68,3 +68,4 @@ watchfiles==1.2.0
 websockets==17.1
 wrapt==2.4.0
 yarl==1.24.5
+gunicorn==21.2.0
