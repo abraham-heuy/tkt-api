@@ -5,6 +5,7 @@ import uuid
 from fastapi import APIRouter, HTTPException, Request, Response, status
 from sqlalchemy import select
 
+from app.config import get_settings
 from app.core.deps import AsyncDB
 from app.models.Role import Role
 from app.schemas.auth import (
@@ -20,6 +21,7 @@ from app.services import auth_service
 from app.utils.security import AuthAudience, TokenType, create_token, decode_token
 
 router = APIRouter()
+settings = get_settings()
 
 
 async def _get_role_name(db, role_id):
@@ -38,20 +40,21 @@ def _set_cookies(
         "access_token",
         access,
         httponly=True,
-        secure=False,
-        samesite="lax",
+        secure=settings.cookie_secure,
+        samesite=settings.cookie_samesite,
         expires=int(access_exp.timestamp()),
     )
     response.set_cookie(
         "refresh_token",
         refresh,
         httponly=True,
-        secure=False,
-        samesite="lax",
+        secure=settings.cookie_secure,
+        samesite=settings.cookie_samesite,
         path="/auth",
         expires=int(refresh_exp.timestamp()),
     )
-    
+
+
 @router.post("/google/callback", response_model=TokenResponse)
 async def google_login(
     body: GoogleLoginRequest,
@@ -121,7 +124,7 @@ async def reset_pin(body: RecoveryResetRequest, db: AsyncDB):
     """Reset PIN using the one-time recovery code."""
     await auth_service.reset_pin_with_recovery_code(
         db, body.email, body.recovery_code, body.new_pin
-    )  
+    )
 
 
 @router.post("/refresh")

@@ -1,12 +1,4 @@
-
-"""
-Central application settings.
-
-Everything the app needs to know about its environment lives here and
-nowhere else. Other modules call get_settings() once and reuse the
-cached instance instead of re-reading the environment.
-"""
-
+from typing import Literal
 from functools import lru_cache
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -41,7 +33,6 @@ class Settings(BaseSettings):
 
     # ── Cookies ──────────────────────────────────────────────
     cookie_domain: str = "localhost"
-    cookie_secure: bool = False
 
     # ── Rate limiting ────────────────────────────────────────
     rate_limit_default: str = "100/minute"
@@ -49,7 +40,6 @@ class Settings(BaseSettings):
 
     # ── CORS ─────────────────────────────────────────────────
     cors_origins: list[str] = [
-        
         "http://localhost:5173",
     ]
 
@@ -71,12 +61,15 @@ class Settings(BaseSettings):
         return {"sub": self.vapid_claims_email}
 
     @property
-    def cookie_samesite(self) -> str:
+    def cookie_samesite(self) -> Literal["lax", "none"]:
         return "none" if self.is_production else "lax"
+
+    @property
+    def cookie_secure(self) -> bool:
+        return self.is_production
 
 
 @lru_cache
 def get_settings() -> Settings:
     """Return a cached Settings instance so .env is only parsed once."""
     return Settings()
-
