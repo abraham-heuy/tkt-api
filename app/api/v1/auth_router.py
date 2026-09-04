@@ -41,7 +41,7 @@ def _set_cookies(
         access,
         httponly=True,
         secure=True,
-        samesite="lax",
+        samesite="none",
         expires=int(access_exp.timestamp()),
     )
     response.set_cookie(
@@ -49,7 +49,7 @@ def _set_cookies(
         refresh,
         httponly=True,
         secure=True,
-        samesite="lax",
+        samesite="none",
         path="/auth",
         expires=int(refresh_exp.timestamp()),
     )
