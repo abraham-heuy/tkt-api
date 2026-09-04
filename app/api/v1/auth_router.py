@@ -40,16 +40,16 @@ def _set_cookies(
         "access_token",
         access,
         httponly=True,
-        secure=settings.cookie_secure,
-        samesite=settings.cookie_samesite,
+        secure=True,
+        samesite="lax",
         expires=int(access_exp.timestamp()),
     )
     response.set_cookie(
         "refresh_token",
         refresh,
         httponly=True,
-        secure=settings.cookie_secure,
-        samesite=settings.cookie_samesite,
+        secure=True,
+        samesite="lax",
         path="/auth",
         expires=int(refresh_exp.timestamp()),
     )
